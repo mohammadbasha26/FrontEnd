@@ -1,12 +1,14 @@
 	package com.niit.DAOImpl;
 
-	import org.hibernate.Session;
-	import org.hibernate.SessionFactory;
-	import org.springframework.beans.factory.annotation.Autowired;
-	import org.springframework.stereotype.Repository;
+	import java.util.List;
 
-	import com.niit.DAO.ProductDAO;
-	import com.niit.model.Product;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.niit.DAO.ProductDAO;
+import com.niit.model.Product;
 
 	@Repository(value="productDAO")
 
@@ -43,10 +45,25 @@
 		session.close();
 			
 			}
+			public void getProduct(int ProductId) {
 
-			public void getProduct(Product product) {
+				Session session=sessionFactory.openSession();
+		session.beginTransaction(); session.get(Product.class, ProductId);
+		session.getTransaction().commit();
+		session.close();
+			
 			
 				
+			}
+			public List<Product> getProducts()
+			{
+				Session session=sessionFactory.openSession();
+				//session.beginTransaction();
+				List<Product> plist=session.createQuery("from Product").getResultList();
+				// TODO Auto-generated method stub
+				session.close();
+
+				return plist;
 			}
 
 
@@ -60,11 +77,15 @@
 
 
 			@Override
-			public void getProduct(int ProductID) {
+			public void deleteProduct(int ProductID) {
 				// TODO Auto-generated method stub
 				
 			}
-	
+
+
+
+
+		
 	
 	}
 

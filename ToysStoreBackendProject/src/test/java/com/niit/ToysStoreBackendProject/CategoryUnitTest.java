@@ -1,12 +1,15 @@
 package com.niit.ToysStoreBackendProject;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.niit.DAO.CategoryDAO;
+import com.niit.model.Category;
 
 public class CategoryUnitTest {
 
@@ -23,7 +26,8 @@ public class CategoryUnitTest {
 
 	@Test
 	public void addCategoryTest() {
-		assertTrue("Problem", true);
+	List<Category> l=	categoryDAO.getCategories();
+	assertEquals(9, l.size());
 
 	}
 
