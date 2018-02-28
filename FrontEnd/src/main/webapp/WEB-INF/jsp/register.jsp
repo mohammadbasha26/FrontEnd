@@ -1,5 +1,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="f" %>
+<%@include file="header.jsp"%>
 
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -39,7 +40,7 @@
                 <div class="form-group">
                     <label for="password" class="col-sm-3 control-label">Password</label>
                     <div class="col-sm-9">
-                        <f:input path="Password" id="password" placeholder="Password" class="form-control"/>
+                        <f:input type="password" path="Password" id="password" placeholder="Password" class="form-control"/>
                     </div>
                 </div>
                 
@@ -72,14 +73,14 @@
                     </div>
                 </div> <!-- /.form-group -->
               <div class="form-group">
-                                  <label for="address" class="col-sm-3 control-label">Addess</label>
+                                  <label for="address" class="col-sm-3 control-label">Address</label>
                                                       <div class="col-sm-9">
                                   
-              <f:textarea path="UserAddress" class="form-control" placeholder="address"/>
+              <f:textarea path="UserAddress" class="form-control" placeholder="Address"/>
               </div>
               </div>
                 <div class="form-group">
-                    <div class="col-sm-9 col-sm-offset-3">
+                    <div class="col-sm-3 col-sm-offset-3">
                         <button type="submit" class="btn btn-primary btn-block">Register</button>
                     </div>
                 </div>
