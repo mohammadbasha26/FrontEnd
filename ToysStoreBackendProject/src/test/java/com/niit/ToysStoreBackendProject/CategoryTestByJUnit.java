@@ -12,16 +12,16 @@ import com.niit.model.Category;
 
 public class CategoryTestByJUnit {
 
-	@Autowired
+/*	@Autowired
 	static AnnotationConfigApplicationContext context;
 
 	static CategoryDAO categoryDAO;
 
 	// The above objects need to initialize
-	/**
+	*//**
 	 * This method is going execute before calling any one of test case and will
 	 * execute only once
-	 */
+	 *//*
 	@BeforeClass
 	public static void initialize() {
 		context = new AnnotationConfigApplicationContext();
@@ -45,5 +45,5 @@ public class CategoryTestByJUnit {
 		assertEquals(category.getCategoryName(), category.getCategoryName());
 
 	}
-
+*/
 }

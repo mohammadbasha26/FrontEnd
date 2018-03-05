@@ -10,6 +10,6 @@ public interface UserDAO {
 		public void updateUser  (User  user);	
 		public User getUser  (int  UserID);	
 
-		
+		public boolean validateUser(String email,String password);
 
 }
