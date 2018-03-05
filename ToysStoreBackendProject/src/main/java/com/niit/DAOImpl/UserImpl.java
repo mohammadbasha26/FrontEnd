@@ -1,7 +1,10 @@
 package com.niit.DAOImpl;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +21,8 @@ import com.niit.model.User;
 	
 	{
 		
+			private static final Object UserName = null;
+			private static final Object Password = null;
 			@Autowired
 			SessionFactory sessionFactory;
 			public void addUser(User user) {
@@ -65,10 +70,28 @@ import com.niit.model.User;
 				
 
 				
-						User u=session.get(User.class,UserID);
+						User user=session.get(User.class,UserID);
 				session.getTransaction().commit();
 				session.close();
-				return u;
+				return user;
+			}
+
+			@Override
+			public boolean validateUser(String email, String password) {
+				Session session=sessionFactory.openSession();
+				boolean UserFound=false;
+				String SQL_QUERY =" from User as o where o.EmailID=? and o.Password=?";
+				Query query = session.createQuery(SQL_QUERY);
+				query.setParameter(0,email);
+				query.setParameter(1,password);
+				List list = query.list();
+
+				if ((list != null) && (list.size() > 0)) {
+					UserFound= true;
+				}
+
+				session.close();
+				return UserFound;
 			}
 
 			
