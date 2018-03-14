@@ -9,6 +9,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Product List</title>
+<link href="<c:url value="/resources/css/bootstrap.min.css"  />" rel="stylesheet">
+
+    <!-- Custom CSS -->
+ 	<link href="<c:url value="/resources/css/shop-homepage.css"  />" rel="stylesheet">
+             <!-- jQuery -->
+	<script type="text/javascript" src="<c:url value="/resources/js/jquery-3.2.1.js"/>"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+	<script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
+               
 
 
 </head>
@@ -29,6 +39,7 @@
                             <th>ProductPrice</th>
                             <th>ProductDesc</th> 
                              <th>ProductInStock</th> 
+                                 <th>ProductImage</th>
                         </tr>
                         <c:if test="${empty productList}">
                             <tr>
@@ -42,7 +53,7 @@
                                 <td><c:out value="${c.productPrice}"></c:out></td>
                                 <td><c:out value="${c.productDesc}"></c:out></td>
                                 <td><c:out value="${c.productInStock}"></c:out></td>
-                                
+                                <td><img  src="${pageContext.request.contextPath}/resources/images/<c:out value='${c.imgName}'></c:out>"/></td>
                                 
                             <td>
                          

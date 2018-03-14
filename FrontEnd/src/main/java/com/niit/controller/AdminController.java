@@ -1,6 +1,11 @@
 package com.niit.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +14,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.niit.DAO.CategoryDAO;
@@ -38,16 +45,66 @@ public class AdminController {
 
 
 	   @RequestMapping(value = "/product", method = RequestMethod.GET)
-	   public String product(Model product) {
-		   product.addAttribute("product", new Product());
+	   public String product(Model m) {
+		 //  m.addAttribute("product", new Product());
+		   m.addAttribute("clist", categoryDAO.getCategories());
+		   m.addAttribute("slist", supplierDAO.getSuppliers());
 		   
-	      return "product";
+		   
+	      return "p";
 	   }
+	   
+	   
+	   
 		  @RequestMapping( value = "/saveProduct",method = RequestMethod.POST)
-		   public ModelAndView product(@ModelAttribute Product cm){
+		   public ModelAndView product(HttpServletRequest request, @RequestParam("file") MultipartFile file){
+			 Product p=new Product();
+			 p.setProductName(request.getParameter("ProductName"));
+			 
+			 int price=Integer.parseInt(request.getParameter("ProductPrice"));
+			 p.setProductPrice(price);
+			 p.setProductDesc(request.getParameter("ProductDesc"));
+			 int stock=Integer.parseInt(request.getParameter("ProductInStock"));
+			 p.setProductInStock(stock);
+			  
+			  
+			 Supplier s=supplierDAO.getSupplier(Integer.parseInt(request.getParameter("supplier")));
+					 
+					 
+			  Category c=categoryDAO.getCategory(Integer.parseInt(request.getParameter("category")));
+			  
+			  p.setCategory(c);
+			  p.setSupplier(s);
+			  //cm.setCategory(c);
+			  //cm.setSupplier(s);
+			  //System.out.println("cccccccccccccc"+s.getSupplierName()+" "+s.getSupplierName());
 		       ModelAndView ma=new ModelAndView();
-		       productDAO.addProduct(cm);
-		       ma.setViewName("redirect:/productlist");
+		       
+		       
+		       String filepath = request.getSession().getServletContext().getRealPath("/");
+				
+
+				String filname = file.getOriginalFilename();
+				p.setImgName(filname);
+		       productDAO.addProduct(p);
+		       
+		       
+		       System.out.println("File path File" + filepath + " " + filname);
+
+				try {
+					// byte imagebyte[] = product.getPimage().getBytes();
+					byte imagebyte[] = file.getBytes();
+					BufferedOutputStream fos = new BufferedOutputStream(
+							new FileOutputStream(filepath + "/resources/images/" + filname));
+					fos.write(imagebyte);
+					fos.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+		       ma.setViewName("redirect:/admin/productlist");
 		   return ma;
 
 		   } 
@@ -73,7 +130,7 @@ public class AdminController {
 			public String delete(@PathVariable("ProductID") int ProductID) {
 				// contactDAO.delete(contactId);
 				productDAO.deleteProduct(ProductID);
-				return "redirect:/productlist?del";
+				return "redirect:/admin/productlist?del";
 		  }
 		  
 		  
@@ -102,7 +159,7 @@ public class AdminController {
 				ModelAndView ma = new ModelAndView();
 				productDAO.updateProduct(uproduct);
 
-				ma.setViewName("redirect:/productlist?update");
+				ma.setViewName("redirect:/admin/productlist?update");
 			
 				return ma;
 
@@ -111,20 +168,22 @@ public class AdminController {
 		  
 		  
 		  
+
+			@ModelAttribute
+			public void addAttributes(Model model) {
+				
+				List<Category> clist= categoryDAO.getCategories();
+				
+				
+				List<Supplier> slist=supplierDAO.getSuppliers();
+			   model.addAttribute("clist",clist);
+			   model.addAttribute("slist",slist);
+			   model.addAttribute("catList",clist);
+
+
+			} 
 		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
+		
 		 
 			@RequestMapping(value = "/category", method = RequestMethod.GET)
 			public String category(Model category) {
@@ -138,7 +197,7 @@ public class AdminController {
 			public ModelAndView category(@ModelAttribute Category cate) {
 				ModelAndView cat = new ModelAndView();
 				categoryDAO.addCategory(cate);
-				cat.setViewName("redirect:/categorylist");
+				cat.setViewName("redirect:/admin/categorylist");
 				return cat;
 
 			}
@@ -163,7 +222,7 @@ public class AdminController {
 			public String deleteCategory(@PathVariable("categoryID") int categoryID) {
 				// contactDAO.delete(contactId);
 				categoryDAO.deleteCategory(categoryID);
-				return "redirect:/categorylist?del";
+				return "redirect:/admin/categorylist?del";
 			}
 
 			@RequestMapping("/updateCategory/{categoryID}")
@@ -188,7 +247,7 @@ public class AdminController {
 				ModelAndView mav = new ModelAndView();
 				categoryDAO.updateCategory(ucat);
 
-				mav.setViewName("redirect:/categorylist?update");
+				mav.setViewName("redirect:/admin/categorylist?update");
 			
 				return mav;
 
@@ -226,7 +285,7 @@ public class AdminController {
 				   public ModelAndView supplier(@ModelAttribute Supplier sup){
 				       ModelAndView su=new ModelAndView();
 				       supplierDAO.addSupplier(sup);
-				       su.setViewName("redirect:/supplierlist");
+				       su.setViewName("redirect:/admin/supplierlist");
 				   return su;
 
 				   } 
@@ -251,7 +310,7 @@ public class AdminController {
 					public String deleteSupplier(@PathVariable("SupplierID") int SupplierID) {
 						// contactDAO.delete(contactId);
 						supplierDAO.deleteSupplier(SupplierID);
-						return "redirect:/supplierlist?del";
+						return "redirect:/admin/supplierlist?del";
 				  }
 				 
 				  
@@ -281,7 +340,7 @@ public class AdminController {
 							ModelAndView su = new ModelAndView();
 							supplierDAO.updateSupplier(usupplier);
 
-							su.setViewName("redirect:/supplierlist?update");
+							su.setViewName("redirect:/admin/supplierlist?update");
 						
 							return su;
 

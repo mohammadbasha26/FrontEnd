@@ -14,6 +14,19 @@
 	<script type="text/javascript" src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
   
       <title>Log In</title>
+      
+      
+      
+      
+      <style>
+body
+{
+    background-image: url("./resources/images/1.jpg");
+    background-repeat: no-repeat;
+	opacity:0.9;
+    background-size: 100%; 
+    padding-bottom: 75px;;
+}</style>
    </head>
    <body>
    <body style="background-color:powderblue;">

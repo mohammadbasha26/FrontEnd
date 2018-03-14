@@ -23,7 +23,7 @@
 <body>
 
 <div class="container">
-            <f:form modelAttribute="uproduct" action="${pageContext.request.contextPath}/saveUProduct" class="form-horizontal" role="form" method="post" >
+            <f:form modelAttribute="uproduct" action="${pageContext.request.contextPath}/admin/saveUProduct" class="form-horizontal" role="form" method="post" >
                 <h2>Product Details</h2>
                 <div class="form-group">
                     <label for="firstName" class="col-sm-3 control-label">Product Name</label>

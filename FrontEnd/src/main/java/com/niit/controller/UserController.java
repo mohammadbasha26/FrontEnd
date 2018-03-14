@@ -1,8 +1,6 @@
 package com.niit.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,9 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.niit.DAO.CategoryDAO;
+import com.niit.DAO.ProductDAO;
 import com.niit.DAO.UserDAO;
+import com.niit.model.Category;
 import com.niit.model.User;
 
 
@@ -23,11 +25,49 @@ public class UserController {
 	UserDAO userDAO;
 	
 	
+	@Autowired
+	CategoryDAO categoryDAO;
+	
+	
+
+	
+	@Autowired
+	ProductDAO productDAO;
+	
 	@RequestMapping("/error")
 	public  String errorPage(){
 		return "error";
 		
 	}
+	
+	
+	
+/*	
+	@RequestMapping("/test")
+	public  String test(){
+		return "productclist";
+		
+	}*/
+	
+
+	@RequestMapping(value="/productCustList") 
+	public ModelAndView displayCustProducts(@RequestParam("cid") int cid)
+	{ 
+		System.out.println(cid); 
+	ModelAndView mv=new ModelAndView("productclist"); 
+	//mv.getModelMap().addAttribute("custProducts",productDAO.getProductsByCategory(cid));
+	
+	mv.addObject("custProducts",productDAO.getProductsByCategory(cid));
+	return mv; 
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	@RequestMapping("/userLogged")
 	public  String userLogged(){
@@ -36,7 +76,18 @@ public class UserController {
 	}
 	
 	
-	
+	@ModelAttribute
+	public void addAttributes(Model model) {
+		
+		List<Category> clist= categoryDAO.getCategories();
+		
+		
+		
+		for(Category c:clist) {
+			System.out.println("ccccccccccccccccccccccccccccccc----------------------------"+c.getCategoryName());
+		}
+	   model.addAttribute("catList",clist);
+	} 
 	@RequestMapping("/login")
 	public ModelAndView login() {
 		ModelAndView mav = new ModelAndView();
